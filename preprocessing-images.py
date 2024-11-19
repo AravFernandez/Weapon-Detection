@@ -2,6 +2,14 @@ import os
 import cv2
 import pywt
 import numpy as np
+import os
+
+input_folder = "C:/Users/A/Weapons-and-Knives-Detector-with-YOLOv8/imgs/Normal/Test/images"
+
+if not os.path.exists(input_folder):
+    os.makedirs(input_folder)
+
+
 
 def apply_symlet_transform(image):
     coeffs2 = pywt.dwt2(image, 'sym2')

@@ -1,11 +1,14 @@
 import cv2
 from ultralytics import YOLO
 
+# Function to detect objects in a single photo
 def detect_objects_in_photo(image_path):
     image_orig = cv2.imread(image_path)
     
+    # Load the YOLO model
     yolo_model = YOLO('./runs/detect/Normal_Compressed/weights/best.pt')
     
+    # Perform object detection
     results = yolo_model(image_orig)
 
     for result in results:
@@ -22,10 +25,12 @@ def detect_objects_in_photo(image_path):
                 cv2.rectangle(image_orig, (int(xmin), int(ymin)), (int(xmax), int(ymax)), color, 2)
                 cv2.putText(image_orig, label, (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
 
+    # Save the result image
     result_path = "./imgs/Test/teste.jpg"
     cv2.imwrite(result_path, image_orig)
     return result_path
 
+# Function to detect objects in a video
 def detect_objects_in_video(video_path):
     yolo_model = YOLO('./runs/detect/Normal_Compressed/weights/best.pt')
     video_capture = cv2.VideoCapture(video_path)
@@ -61,6 +66,7 @@ def detect_objects_in_video(video_path):
 
     return result_video_path
 
+# Function to detect objects in images and display them in a window
 def detect_objects_and_plot(path_orig):
     image_orig = cv2.imread(path_orig)
     
@@ -82,6 +88,11 @@ def detect_objects_and_plot(path_orig):
                 cv2.rectangle(image_orig, (int(xmin), int(ymin)), (int(xmax), int(ymax)), color, 2)
                 cv2.putText(image_orig, label, (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
     
-    cv2.imshow("Teste", image_orig)
+    cv2.imshow("Test", image_orig)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+# Test video path for user input
+video_path = r"C:\Users\A\Pictures\Camera Roll\WIN_20240925_11_55_51_Pro.mp4"
+result_video_path = detect_objects_in_video(video_path)
+print(f"Processed video saved at: {result_video_path}")
